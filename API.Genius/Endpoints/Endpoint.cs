@@ -18,7 +18,7 @@ public static class Endpoint
             .WithTags("Veiculos")
             .MapEndpoint<PutEntradaPorPlacaAlphadigiLegacyEndpoint>();
 
-        endpoints.MapGroup("/v1/veiculos/alphadigi")
+        endpoints.MapGroup("/v1/veiculos/entradaalphadigi")
             .WithTags("Veiculos")
             .MapEndpoint<PutEntradaPorPlacaAlphadigiEndpoint>();
 
