@@ -1,0 +1,61 @@
+﻿# Arquivo a ser utilizado pelo plugin REST Client do VSCode para testar a API
+# Abrir o arquivo e usar Ctrl-Alt-R para enviar a requisição
+PUT http://localhost:5103/OnCarHandled/CameraAlphadigi
+Content-Type: application/json
+
+
+{
+  "AlarmInfoPlate": {
+    "channel": 1,
+    "deviceName": "string",
+    "ipaddr": "string",
+    "openflag": 0,
+    "entityName": "string",
+    "taxID": "string",
+    "result": {
+      "PlateResult": {
+        "bright": 0,
+        "carBright": 0,
+        "carColor": 0,
+        "colorType": 0,
+        "colorValue": 0,
+        "confidence": 0,
+        "direction": 0,
+        "imageFile": "",
+        "imageFileLen": 0,
+        "imageFragmentFile": "string",
+        "imageFragmentFileLen": 0,
+        "license": "BBB-9999",
+        "whitelist": 0,
+        "location": {
+          "RECT": {
+            "left": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0
+          }
+        },
+        "timeStamp": {
+          "timeval": {
+            "sec": 0,
+            "usec": 0
+          }
+        },
+        "timeUsed": 0,
+        "triggerType": 0,
+        "type": 0,
+        "speed": 0,
+        "radarSpeed": {
+          "Speed": {
+            "perHour": 0,
+            "direction": 0
+          }
+        },
+        "vehicleId": 0,
+        "realplate": true,
+        "retryflag": 0
+      }
+    },
+    "serialno": "string"
+  }
+}

@@ -1,0 +1,36 @@
+# Arquivos de build e compilação
+bin/
+obj/
+Debug/
+Release/
+
+# Arquivos de pacotes NuGet
+packages/
+*.nupkg
+
+# Arquivos de configuração do Visual Studio
+.vs/
+.vscode/
+*.suo
+*.user
+
+# Arquivos de cache e temporários
+*.cache
+*.tmp
+*.temp
+
+# Arquivos de logs
+*.log
+
+# Arquivos de teste
+TestResults/
+*.testsettings
+
+# Outros arquivos que não devem ser versionados
+*.userosscache
+*.sln.docstates
+*.ncb
+*.cache
+*.VC.db
+*.VC.opendb
+

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Genius.Core", "API.Genius.Core\API.Genius.Core.csproj", "{1BDD83A0-3EED-458F-B0B1-F1B7AA922A93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Genius", "API.Genius\API.Genius.csproj", "{05382E3C-E36D-4A97-B189-CD3604920C60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Genius.Lib", "API.Genius.Lib\API.Genius.Lib.csproj", "{A2E7558B-A4E7-4743-9158-7447F9A650D2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BDD83A0-3EED-458F-B0B1-F1B7AA922A93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BDD83A0-3EED-458F-B0B1-F1B7AA922A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BDD83A0-3EED-458F-B0B1-F1B7AA922A93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BDD83A0-3EED-458F-B0B1-F1B7AA922A93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05382E3C-E36D-4A97-B189-CD3604920C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05382E3C-E36D-4A97-B189-CD3604920C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05382E3C-E36D-4A97-B189-CD3604920C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05382E3C-E36D-4A97-B189-CD3604920C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2E7558B-A4E7-4743-9158-7447F9A650D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2E7558B-A4E7-4743-9158-7447F9A650D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2E7558B-A4E7-4743-9158-7447F9A650D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2E7558B-A4E7-4743-9158-7447F9A650D2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
