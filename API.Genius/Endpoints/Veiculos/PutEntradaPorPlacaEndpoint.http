@@ -1,0 +1,11 @@
+﻿# Arquivo a ser utilizado pelo plugin REST Client do VSCode para testar a API
+# Abrir o arquivo e usar Ctrl-Alt-R para enviar a requisição
+PUT http://localhost:5103/v1/veiculos/entradaplaca
+Content-Type: application/json
+
+
+{
+  "placa": "CCC-1234",
+  "idCamera": 1234,
+  "dataEntrada": "2025-07-04T18:41:00Z"
+}

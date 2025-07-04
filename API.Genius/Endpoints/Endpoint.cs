@@ -14,17 +14,25 @@ public static class Endpoint
             .WithTags("Health Check")
             .MapGet("", () => new { message = "Genius.API is running", });
 
+        // Endpoint originado do apiCamera (Robson)
         endpoints.MapGroup("/OnCarHandled/CameraAlphadigi")
             .WithTags("Veiculos")
-            .MapEndpoint<PutEntradaPorPlacaAlphadigiLegacyEndpoint>();
+            .MapEndpoint<PutEntradaCameraAlphadigiLegacyEndpoint>();
 
-        endpoints.MapGroup("/v1/veiculos/entradaalphadigi")
+        // Endpoint que segue mesmo fluxo do /OnCarHandled/CameraAlphadigi
+        endpoints.MapGroup("/v1/veiculos/entradacameraalphadigi")
             .WithTags("Veiculos")
-            .MapEndpoint<PutEntradaPorPlacaAlphadigiEndpoint>();
+            .MapEndpoint<PutEntradaCameraAlphadigiEndpoint>();
 
-        endpoints.MapGroup("/v1/veiculos")
+        // Entrada direta por placa
+        endpoints.MapGroup("/v1/veiculos/entradaplaca")
             .WithTags("Veiculos")
             .MapEndpoint<PutEntradaPorPlacaEndpoint>();
+
+        // Entrada direta por placa com LPR da Alphadigi
+        endpoints.MapGroup("/v1/veiculos/entradaplacaalphadigi")
+            .WithTags("Veiculos")
+            .MapEndpoint<PutEntradaPorPlacaAlphadigiEndpoint>();
 
     }
 

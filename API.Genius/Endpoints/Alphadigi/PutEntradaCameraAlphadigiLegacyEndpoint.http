@@ -1,6 +1,6 @@
 ﻿# Arquivo a ser utilizado pelo plugin REST Client do VSCode para testar a API
 # Abrir o arquivo e usar Ctrl-Alt-R para enviar a requisição
-PUT http://localhost:5103/v1/veiculos/entradaalphadigi
+PUT http://localhost:5103/OnCarHandled/CameraAlphadigi
 Content-Type: application/json
 
 
@@ -25,7 +25,7 @@ Content-Type: application/json
         "imageFileLen": 0,
         "imageFragmentFile": "string",
         "imageFragmentFileLen": 0,
-        "license": "BBB-9999",
+        "license": "BBB-8888",
         "whitelist": 0,
         "location": {
           "RECT": {

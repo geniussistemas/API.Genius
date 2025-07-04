@@ -10,6 +10,7 @@ namespace API.Genius.Core.Handlers;
 public interface IVeiculoHandler
 {
     //    Task<Response<Veiculo?>> CreateAsync(PutEntradaPorPlacaAlphadigiRequest request);
-    Task<FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>> CreateAsyncAlphadigi(PutEntradaPorPlacaAlphadigiRequest request);
+    Task<Response<VeiculoResponse?>> CreateEntradaPorPlacaAsync(PutEntradaPorPlacaRequest request);
+    Task<FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>> CreateEntradaCameraAlphadigiAsync(PutEntradaPorPlacaAlphadigiRequest request);
     Task<Response<VeiculoResponse?>> GetVeiculoPorPlacaAsync(GetVeiculoPorPlacaRequest request);
 }

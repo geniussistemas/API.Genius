@@ -12,7 +12,7 @@ namespace API.Genius.Core.Models
         public string Placa { get; set; } = string.Empty;
         public int IdCamera { get; set; }
         public DateTime Data { get; set; }
-        public int Status { get; set; }
-        public string ArquivoImagem { get; set; } = string.Empty;
+        public int? Status { get; set; } = null;
+        public string? ArquivoImagem { get; set; } = string.Empty;
     }
 }

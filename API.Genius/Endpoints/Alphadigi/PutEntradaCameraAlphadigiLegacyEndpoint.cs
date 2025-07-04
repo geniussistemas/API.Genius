@@ -10,7 +10,7 @@ using API.Genius.Core.Responses;
 
 namespace API.Genius.Endpoints.Alphadigi;
 
-public class PutEntradaPorPlacaAlphadigiLegacyEndpoint : IEndpoint
+public class PutEntradaCameraAlphadigiLegacyEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPut("", HandleAsync)
@@ -23,7 +23,7 @@ public class PutEntradaPorPlacaAlphadigiLegacyEndpoint : IEndpoint
     protected static async Task<IResult> HandleAsync(
         IVeiculoHandler handler, PutEntradaPorPlacaAlphadigiRequest request)
     {
-        var result = await handler.CreateAsyncAlphadigi(request);
+        var result = await handler.CreateEntradaCameraAlphadigiAsync(request);
 
         return result.IsSuccess
             ? TypedResults.Ok(result)

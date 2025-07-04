@@ -13,14 +13,15 @@ namespace API.Genius.Handlers;
 
 public class VeiculoHandler(AppDbContext context) : IVeiculoHandler
 {
-    public async Task<FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>> CreateAsyncAlphadigi(PutEntradaPorPlacaAlphadigiRequest request)
+    public async Task<Response<VeiculoResponse?>> CreateEntradaPorPlacaAsync(PutEntradaPorPlacaRequest request)
     {
         var entradaSaidaPlaca = new EntradaSaidaPlaca
         {
-            Placa = request.alarmInfoPlate.result.plateResult.license.Replace(" ", "") ?? string.Empty,
-            IdCamera = request.alarmInfoPlate.channel,
-            Data = DateTime.Now,
-            ArquivoImagem = request.alarmInfoPlate.result.plateResult.imageFile ?? string.Empty
+            Placa = request.Placa?.Replace(" ", "") ?? string.Empty,
+            IdCamera = request.IdCamera,
+            Data = request.DataEntrada,
+            ArquivoImagem = request.ArquivoImagem,
+            Status = request.Status
             // TODO: Verificar se o campo status deve ser criado com NULL deve ser criado com algum valor
         };
 
@@ -31,19 +32,17 @@ public class VeiculoHandler(AppDbContext context) : IVeiculoHandler
             await context.EntradaSaidaPlaca.AddAsync(entradaSaidaPlaca);    // Em memória
             await context.SaveChangesAsync();   // Efetiva alterações na base
 
-            var response = new PutEntradaPorPlacaAlphadigiResponse
+            var response = new VeiculoResponse
             {
-                responseAlarmInfoPlate = new ResponseAlarmInfoPlate
-                {
-                    info = "ok",
-                    content = "retransfer_stop",    // Interrompa a transmissão
-                    isPay = true.ToString(),
-                }
+                Id = entradaSaidaPlaca.Id,
+                Placa = entradaSaidaPlaca.Placa,    // Interrompa a transmissão
+                IdTicket = "",
+                DataHoraEntrada = entradaSaidaPlaca.Data
             };
 
             Log.Information($"Entrada do veículo: Placa - {entradaSaidaPlaca.Placa} Câmera - {entradaSaidaPlaca.IdCamera}");
 
-            return new FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>(response, 201, "Entrada criada com sucesso");
+            return new Response<VeiculoResponse?>(response, 201, "Entrada criada com sucesso");
         }
         catch (Exception e)
         {
@@ -51,8 +50,39 @@ public class VeiculoHandler(AppDbContext context) : IVeiculoHandler
 
             Log.Error(e, $"Erro ao criar entrada do veículo: Placa - {entradaSaidaPlaca.Placa} Câmera - {entradaSaidaPlaca.IdCamera}");
 
-            return new FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>(null, 500, "Não foi possível efetuar a entrada do veículo");
+            return new Response<VeiculoResponse?>(null, 500, "Não foi possível efetuar a entrada do veículo");
         }
+    }
+
+    public async Task<FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>> CreateEntradaCameraAlphadigiAsync(PutEntradaPorPlacaAlphadigiRequest request)
+    {
+        var internalRequest = new PutEntradaPorPlacaRequest
+        {
+            Placa = request.alarmInfoPlate.result.plateResult.license.Replace(" ", "") ?? string.Empty,
+            IdCamera = request.alarmInfoPlate.channel,
+            DataEntrada = DateTime.Now,
+            ArquivoImagem = request.alarmInfoPlate.result.plateResult.imageFile ?? string.Empty
+        };
+
+        var result = await CreateEntradaPorPlacaAsync(internalRequest);
+
+        // if (!result.IsSuccess)
+        if (result.Data == null)
+        {
+            return new FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>(null, result.Code, result.Message ?? "Não foi possível efetuar a entrada do veículo");
+        }
+
+        var internalResponse = new PutEntradaPorPlacaAlphadigiResponse
+        {
+            responseAlarmInfoPlate = new ResponseAlarmInfoPlate
+            {
+                info = "ok",
+                content = "retransfer_stop",    // Interrompa a transmissão
+                isPay = true.ToString(),
+            }
+        };
+
+        return new FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>(internalResponse, result.Code, result.Message);
     }
     
     public async Task<Response<VeiculoResponse?>> GetVeiculoPorPlacaAsync(GetVeiculoPorPlacaRequest request)
@@ -78,12 +108,10 @@ public class VeiculoHandler(AppDbContext context) : IVeiculoHandler
             var response = new VeiculoResponse
             {
                 // TODO: Revisar informações vindas de veiculo
-                id = veiculo.Id,
-                licensePlate = veiculo.Placa,
-                ticketId = "",  //veiculo.TicketId,
-                cameraId = 0, //veiculo.CameraId,
-                entryDateTime = veiculo.Data,
-                entryImage = veiculo.ArquivoImagem
+                Id = veiculo.Id,
+                Placa = veiculo.Placa,
+                IdTicket = "",
+                DataHoraEntrada = veiculo.Data
             };
 
             return new Response<VeiculoResponse?>(response);
