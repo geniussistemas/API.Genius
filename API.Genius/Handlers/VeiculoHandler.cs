@@ -17,7 +17,7 @@ public class VeiculoHandler(AppDbContext context) : IVeiculoHandler
     {
         var entradaSaidaPlaca = new EntradaSaidaPlaca
         {
-            Placa = request.Placa?.Replace(" ", "") ?? string.Empty,
+            Placa = request.Placa?.Replace(" ", "").Replace("-", "") ?? string.Empty,
             IdCamera = request.IdCamera,
             Data = request.DataEntrada,
             ArquivoImagem = request.ArquivoImagem,
