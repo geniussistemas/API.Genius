@@ -33,4 +33,4 @@ TestResults/
 *.cache
 *.VC.db
 *.VC.opendb
-
+*.bak
