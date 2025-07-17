@@ -10,6 +10,7 @@ builder.AddDataContexts();
 builder.AddCrossOrigin();
 builder.AddDocumentation();
 builder.AddServices();
+builder.AddExternalApis();
 
 var app = builder.Build();
 app.ConfigureDevEnvironment();

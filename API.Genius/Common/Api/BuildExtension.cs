@@ -6,10 +6,12 @@ using API.Genius.Handlers;
 using API.Genius.Core;
 using API.Genius.Core.Handlers;
 using Serilog;
+using API.Genius.Clients;
+using Refit;
 
 namespace API.Genius.Common.Api;
 
-    public static class BuildExtension
+public static class BuildExtension
 {
     public static void AddConfiguration(this WebApplicationBuilder builder)
     {
@@ -95,5 +97,26 @@ namespace API.Genius.Common.Api;
 
         Log.Information($"Logger configurado com sucesso (arquivo inicial {logFilePath}).");
     }
+
+    private static void AddGarenApi(WebApplicationBuilder builder)
+    {
+        var apiSettings = builder.Configuration.GetSection("GarenApiSettings");
+        string baseUrl = apiSettings.GetValue<string>("BaseUrl") ?? string.Empty;
+
+        builder.Services.AddHttpContextAccessor();
+
+        builder.Services.AddTransient<GarenAuthHeaderHandler>();
+
+        builder.Services
+            .AddRefitClient<IGarenApiClient>()
+            .ConfigureHttpClient(c => c.BaseAddress = new Uri(baseUrl))
+            .AddHttpMessageHandler<GarenAuthHeaderHandler>();
+    }
+
+    public static void AddExternalApis(this WebApplicationBuilder builder)
+    {
+        AddGarenApi(builder);
+    }
+
 
 }
