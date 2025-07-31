@@ -13,30 +13,36 @@ using API.Genius.Endpoints.Veiculos;
 
 namespace API.Genius.Endpoints.Alphadigi;
 
-public class PutEntradaPorPlacaAlphadigiEndpoint : IEndpoint
+public class PutEntradaSaidaPorPlacaAlphadigiEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPut("", HandleAsync)
-            .WithName("Veículo: Entrada por placa/LPR com câmera Alphadigi")
-            .WithSummary("Entrada por placa/LPR")
-            .WithDescription("Entrada do veículo no estacionamento por placa/LPR")
+            .WithName("Veículo: Entrada/saída por placa/LPR com câmera Alphadigi")
+            .WithSummary("Entrada/saída por placa/LPR")
+            .WithDescription("Entrada e saída do veículo no estacionamento por placa/LPR")
             .WithOrder(4)
             .Produces<Response<Veiculo?>>();
 
     private static async Task<IResult> HandleAsync(
         IVeiculoHandler handler,
-        PutEntradaPorPlacaAlphadigiRequest request)
+        PutEntradaSaidaPorPlacaAlphadigiRequest request)
     {
-        var internalRequest = new PutEntradaPorPlacaRequest
+        var internalRequest = new PutEntradaSaidaPorPlacaRequest
         {
             Placa = request.alarmInfoPlate.result.plateResult.license.Replace(" ", ""),
             IdCamera = request.alarmInfoPlate.channel,
-            DataEntrada = DateTime.Now,
+            DataEvento = DateTime.Now,
             ArquivoImagem = request.alarmInfoPlate.result.plateResult.imageFile,
-            Status = StatusEntradaSaidaPlaca.Entrada
+            Status = (request.alarmInfoPlate.result.plateResult.direction == AlphadigiCamDirection.Coming?
+                        StatusEntradaSaidaPlaca.Entrada:
+                        (request.alarmInfoPlate.result.plateResult.direction == AlphadigiCamDirection.Going?
+                            StatusEntradaSaidaPlaca.Saida:
+                            StatusEntradaSaidaPlaca.NaoInformado
+                        )
+                      )
         };
 
-        var result = await handler.CreateEntradaPorPlacaAsync(internalRequest);
+        var result = await handler.CreateEntradaSaidaPorPlacaAsync(internalRequest);
 
         return result.IsSuccess
             ? TypedResults.Ok(result)

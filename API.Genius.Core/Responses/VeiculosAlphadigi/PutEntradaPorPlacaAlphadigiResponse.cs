@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace API.Genius.Core.Responses.VeiculosAlphadigi;
 
 #pragma warning disable IDE1006 // Estilos de Nomenclatura
-public class PutEntradaPorPlacaAlphadigiResponse
+public class PutEntradaSaidaPorPlacaAlphadigiResponse
 {
     [JsonPropertyName("Response_AlarmInfoPlate")]
     public ResponseAlarmInfoPlate responseAlarmInfoPlate { get; set; } = new ResponseAlarmInfoPlate();

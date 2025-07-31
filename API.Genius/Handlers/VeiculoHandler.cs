@@ -8,20 +8,21 @@ using API.Genius.Core.Requests.VeiculosAlphadigi;
 using API.Genius.Core.Requests.Veiculos;
 using API.Genius.Core.Responses.Veiculos;
 using API.Genius.Core.Responses.VeiculosAlphadigi;
+using API.Genius.Core.Constants;
 
 namespace API.Genius.Handlers;
 
 public class VeiculoHandler(AppDbContext context) : IVeiculoHandler
 {
-    public async Task<Response<VeiculoResponse?>> CreateEntradaPorPlacaAsync(PutEntradaPorPlacaRequest request)
+    public async Task<Response<VeiculoResponse?>> CreateEntradaSaidaPorPlacaAsync(PutEntradaSaidaPorPlacaRequest request)
     {
         var entradaSaidaPlaca = new EntradaSaidaPlaca
         {
             Placa = request.Placa?.Replace(" ", "").Replace("-", "") ?? string.Empty,
             IdCamera = request.IdCamera,
-            Data = request.DataEntrada,
+            Data = request.DataEvento,
             ArquivoImagem = request.ArquivoImagem,
-            Status = request.Status
+            Status = request.Status ?? StatusEntradaSaidaPlaca.NaoInformado
             // TODO: Verificar se o campo status deve ser criado com NULL deve ser criado com algum valor
         };
 
@@ -54,25 +55,25 @@ public class VeiculoHandler(AppDbContext context) : IVeiculoHandler
         }
     }
 
-    public async Task<FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>> CreateEntradaCameraAlphadigiAsync(PutEntradaPorPlacaAlphadigiRequest request)
+    public async Task<FlatResponse<PutEntradaSaidaPorPlacaAlphadigiResponse?>> CreateEntradaSaidaCameraAlphadigiAsync(PutEntradaSaidaPorPlacaAlphadigiRequest request)
     {
-        var internalRequest = new PutEntradaPorPlacaRequest
+        var internalRequest = new PutEntradaSaidaPorPlacaRequest
         {
             Placa = request.alarmInfoPlate.result.plateResult.license.Replace(" ", "") ?? string.Empty,
             IdCamera = request.alarmInfoPlate.channel,
-            DataEntrada = DateTime.Now,
+            DataEvento = DateTime.Now,
             ArquivoImagem = request.alarmInfoPlate.result.plateResult.imageFile ?? string.Empty
         };
 
-        var result = await CreateEntradaPorPlacaAsync(internalRequest);
+        var result = await CreateEntradaSaidaPorPlacaAsync(internalRequest);
 
         // if (!result.IsSuccess)
         if (result.Data == null)
         {
-            return new FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>(null, result.Code, result.Message ?? "Não foi possível efetuar a entrada do veículo");
+            return new FlatResponse<PutEntradaSaidaPorPlacaAlphadigiResponse?>(null, result.Code, result.Message ?? "Não foi possível efetuar a entrada do veículo");
         }
 
-        var internalResponse = new PutEntradaPorPlacaAlphadigiResponse
+        var internalResponse = new PutEntradaSaidaPorPlacaAlphadigiResponse
         {
             responseAlarmInfoPlate = new ResponseAlarmInfoPlate
             {
@@ -82,7 +83,7 @@ public class VeiculoHandler(AppDbContext context) : IVeiculoHandler
             }
         };
 
-        return new FlatResponse<PutEntradaPorPlacaAlphadigiResponse?>(internalResponse, result.Code, result.Message);
+        return new FlatResponse<PutEntradaSaidaPorPlacaAlphadigiResponse?>(internalResponse, result.Code, result.Message);
     }
     
     public async Task<Response<VeiculoResponse?>> GetVeiculoPorPlacaAsync(GetVeiculoPorPlacaRequest request)

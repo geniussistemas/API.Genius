@@ -8,7 +8,7 @@ using API.Genius.Core.Responses;
 
 namespace API.Genius.Endpoints.Veiculos;
 
-public class PutEntradaPorPlacaEndpoint : IEndpoint
+public class PutEntradaSaidaPorPlacaEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPut("", HandleAsync)
@@ -20,11 +20,11 @@ public class PutEntradaPorPlacaEndpoint : IEndpoint
 
     private static async Task<IResult> HandleAsync(
         IVeiculoHandler handler,
-        PutEntradaPorPlacaRequest request)
+        PutEntradaSaidaPorPlacaRequest request)
     {
-        request.Status = StatusEntradaSaidaPlaca.Entrada;
+        request.Status = StatusEntradaSaidaPlaca.NaoInformado;
 
-        var result = await handler.CreateEntradaPorPlacaAsync(request);
+        var result = await handler.CreateEntradaSaidaPorPlacaAsync(request);
 
         return result.IsSuccess
             ? TypedResults.Ok(result)

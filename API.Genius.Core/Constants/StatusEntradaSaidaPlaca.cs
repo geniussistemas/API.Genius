@@ -11,6 +11,7 @@ public class StatusEntradaSaidaPlaca
     public static readonly int? EntradaSaidaPlacaLegado = null;
     public static readonly int? EntradaSaidaPlacaProcessadaLegado = 1;
     #endregion
+    public const int NaoInformado = 0;
     public const int Entrada = 10;
     public const int Saida = 20;
 }

@@ -11,7 +11,7 @@ using Serilog;
 
 namespace API.Genius.Endpoints.Alphadigi;
 
-public class PutEntradaCameraAlphadigiEndpoint : IEndpoint
+public class PutEntradaSaidaCameraAlphadigiEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPut("", HandleAsync)
@@ -22,9 +22,9 @@ public class PutEntradaCameraAlphadigiEndpoint : IEndpoint
             .Produces<FlatResponse<VeiculoAlphadigi?>>();
     
     protected static async Task<IResult> HandleAsync(
-        IVeiculoHandler handler, PutEntradaPorPlacaAlphadigiRequest request)
+        IVeiculoHandler handler, PutEntradaSaidaPorPlacaAlphadigiRequest request)
     {
-        var result = await handler.CreateEntradaCameraAlphadigiAsync(request);
+        var result = await handler.CreateEntradaSaidaCameraAlphadigiAsync(request);
 
         return result.IsSuccess
             ? TypedResults.Ok(result)
