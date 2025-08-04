@@ -16,7 +16,8 @@ namespace API.Genius.Endpoints.Alphadigi;
 public class PutEntradaSaidaPorPlacaAlphadigiEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapPut("", HandleAsync)
+        => app.MapPost("/entradasaidaplacaalphadigi", HandleAsync)
+        // => app.MapPost("", HandleAsync)
             .WithName("Veículo: Entrada/saída por placa/LPR com câmera Alphadigi")
             .WithSummary("Entrada/saída por placa/LPR")
             .WithDescription("Entrada e saída do veículo no estacionamento por placa/LPR")

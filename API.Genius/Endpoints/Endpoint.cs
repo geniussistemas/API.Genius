@@ -16,22 +16,14 @@ public static class Endpoint
 
         // Endpoint originado do apiCamera (Robson)
         endpoints.MapGroup("/OnCarHandled/CameraAlphadigi")
-            .WithTags("Veiculos")
+            .WithTags("OnCarHandled")
             .MapEndpoint<PutEntradaSaidaCameraAlphadigiLegacyEndpoint>();
 
         // Endpoint que segue mesmo fluxo do /OnCarHandled/CameraAlphadigi
-        endpoints.MapGroup("/v1/veiculos/entradasaidacameraalphadigi")
+        endpoints.MapGroup("/v1/veiculos")
             .WithTags("Veiculos")
-            .MapEndpoint<PutEntradaSaidaCameraAlphadigiEndpoint>();
-
-        // Entrada direta por placa
-        endpoints.MapGroup("/v1/veiculos/entradasaidaplaca")
-            .WithTags("Veiculos")
-            .MapEndpoint<PutEntradaSaidaPorPlacaEndpoint>();
-
-        // Entrada direta por placa com LPR da Alphadigi
-        endpoints.MapGroup("/v1/veiculos/entradasaidaplacaalphadigi")
-            .WithTags("Veiculos")
+            .MapEndpoint<PutEntradaSaidaCameraAlphadigiEndpoint>()
+            .MapEndpoint<PutEntradaSaidaPorPlacaEndpoint>()
             .MapEndpoint<PutEntradaSaidaPorPlacaAlphadigiEndpoint>();
 
     }

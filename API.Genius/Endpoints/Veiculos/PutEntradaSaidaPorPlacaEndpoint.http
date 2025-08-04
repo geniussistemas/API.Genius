@@ -1,6 +1,6 @@
 ﻿# Arquivo a ser utilizado pelo plugin REST Client do VSCode para testar a API
 # Abrir o arquivo e usar Ctrl-Alt-R para enviar a requisição
-PUT http://0.0.0.0:5103/v1/veiculos/entradasaidaplaca
+PUT http://10.0.0.91:5103/v1/veiculos/entradasaidaplaca
 Content-Type: application/json
 
 {

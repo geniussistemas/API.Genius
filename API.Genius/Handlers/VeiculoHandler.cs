@@ -41,15 +41,15 @@ public class VeiculoHandler(AppDbContext context) : IVeiculoHandler
                 DataHoraEntrada = entradaSaidaPlaca.Data
             };
 
-            Log.Information($"Entrada do veículo: Placa - {entradaSaidaPlaca.Placa} Câmera - {entradaSaidaPlaca.IdCamera}");
+            Log.Information($"Entrada/saída do veículo: Placa - {entradaSaidaPlaca.Placa} Câmera - {entradaSaidaPlaca.IdCamera}");
 
-            return new Response<VeiculoResponse?>(response, 201, "Entrada criada com sucesso");
+            return new Response<VeiculoResponse?>(response, 201, "Solicitação de entrada/saída criada com sucesso");
         }
         catch (Exception e)
         {
             // *** Nunca é recomendado simplesmente silenciar a exceção
 
-            Log.Error(e, $"Erro ao criar entrada do veículo: Placa - {entradaSaidaPlaca.Placa} Câmera - {entradaSaidaPlaca.IdCamera}");
+            Log.Error(e, $"Erro ao criar entrada/saída do veículo: Placa - {entradaSaidaPlaca.Placa} Câmera - {entradaSaidaPlaca.IdCamera}");
 
             return new Response<VeiculoResponse?>(null, 500, "Não foi possível efetuar a entrada do veículo");
         }

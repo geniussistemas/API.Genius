@@ -11,7 +11,7 @@ namespace API.Genius.Endpoints.Veiculos;
 public class PutEntradaSaidaPorPlacaEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapPut("", HandleAsync)
+        => app.MapPut("/entradasaidaplaca", HandleAsync)
             .WithName("Veículo: Efetua entrada por placa/LPR")
             .WithSummary("Entrada por placa/LPR")
             .WithDescription("Entrada do veículo no estacionamento por placa/LPR")
