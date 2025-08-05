@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace API.Genius.Data;
 
+// TODO: Acesso a banco de dados deve ser transferido para o Core
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<EntradaSaidaPlaca> EntradaSaidaPlaca { get; set; } = null!;
@@ -13,8 +14,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         // Adiciona configurações para todas as classes que implementam
         // IEntityTypeConfiguration no Assembly atual
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        //        base.OnModelCreating(modelBuilder);
 
         // Informa o EF que a tabela EntradaSaidaPlaca possui uma trigger
         // Com isso o EF trabalhe num modo menos eficiente de acesso (antigo)

@@ -4,6 +4,7 @@ using API.Genius.Core.Models;
 
 namespace API.Genius.Data.Mappings;
 
+// TODO: Acesso a banco de dados deve ser transferido para o Core
 public class EntradaSaidaPlacaMapping : IEntityTypeConfiguration<EntradaSaidaPlaca>
 {
     public void Configure(EntityTypeBuilder<EntradaSaidaPlaca> builder)
