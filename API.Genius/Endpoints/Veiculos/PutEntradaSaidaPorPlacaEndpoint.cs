@@ -1,5 +1,6 @@
 using System;
 using API.Genius.Common.Api;
+using API.Genius.Core.Constants;
 using API.Genius.Core.Handlers;
 using API.Genius.Core.Models;
 using API.Genius.Core.Requests.Veiculos;
@@ -7,10 +8,10 @@ using API.Genius.Core.Responses;
 
 namespace API.Genius.Endpoints.Veiculos;
 
-public class PutEntradaPorPlacaEndpoint : IEndpoint
+public class PutEntradaSaidaPorPlacaEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapPut("/veiculos", HandleAsync)
+        => app.MapPut("/entradasaidaplaca", HandleAsync)
             .WithName("Veículo: Efetua entrada por placa/LPR")
             .WithSummary("Entrada por placa/LPR")
             .WithDescription("Entrada do veículo no estacionamento por placa/LPR")
@@ -19,13 +20,11 @@ public class PutEntradaPorPlacaEndpoint : IEndpoint
 
     private static async Task<IResult> HandleAsync(
         IVeiculoHandler handler,
-        string licensePlate)
+        PutEntradaSaidaPorPlacaRequest request)
     {
-        var request = new GetVeiculoPorPlacaRequest
-        {
-            Placa = licensePlate
-        };
-        var result = await handler.GetVeiculoPorPlacaAsync(request);
+        request.Status = StatusEntradaSaidaPlaca.NaoInformado;
+
+        var result = await handler.CreateEntradaSaidaPorPlacaAsync(request);
 
         return result.IsSuccess
             ? TypedResults.Ok(result)

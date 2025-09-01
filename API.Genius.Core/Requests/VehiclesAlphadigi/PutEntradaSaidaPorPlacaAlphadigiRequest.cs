@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace API.Genius.Core.Requests.VeiculosAlphadigi;
 
 #pragma warning disable IDE1006 // Estilos de Nomenclatura
-public class PutEntradaPorPlacaAlphadigiRequest
+public class PutEntradaSaidaPorPlacaAlphadigiRequest
 {
     [JsonPropertyName("AlarmInfoPlate")]
     public AlarmInfoPlate alarmInfoPlate { get; set; } = new AlarmInfoPlate();
@@ -39,7 +39,7 @@ public class PlateResult
     public int colorType { get; set; }
     public int colorValue { get; set; }
     public int confidence { get; set; }
-    public int direction { get; set; }
+    public int direction { get; set; } = 0;
     public string imageFile { get; set; } = string.Empty;
     public int imageFileLen { get; set; }
     public string imageFragmentFile { get; set; } = string.Empty;

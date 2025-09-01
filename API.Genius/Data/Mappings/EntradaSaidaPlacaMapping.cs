@@ -4,6 +4,7 @@ using API.Genius.Core.Models;
 
 namespace API.Genius.Data.Mappings;
 
+// TODO: Acesso a banco de dados deve ser transferido para o Core
 public class EntradaSaidaPlacaMapping : IEntityTypeConfiguration<EntradaSaidaPlaca>
 {
     public void Configure(EntityTypeBuilder<EntradaSaidaPlaca> builder)
@@ -23,12 +24,6 @@ public class EntradaSaidaPlacaMapping : IEntityTypeConfiguration<EntradaSaidaPla
             .HasColumnType("DATETIME");
         builder.Property(x => x.Status)
             .HasColumnType("INT");
-        // Ignora gravação do status no INSERT (null)            
-        builder.Property(x => x.Status)
-            .Metadata.SetBeforeSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
-        // Permite gravação do status no UPDATE
-        builder.Property(x => x.Status)
-            .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Save);
         builder.Property(x => x.ArquivoImagem)
             .HasColumnType("VARCHAR");
     }

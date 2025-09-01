@@ -7,24 +7,23 @@ using API.Genius.Core.Handlers;
 using API.Genius.Core.Models;
 using API.Genius.Core.Requests.VeiculosAlphadigi;
 using API.Genius.Core.Responses;
-using Serilog;
 
 namespace API.Genius.Endpoints.Alphadigi;
 
-public class PutEntradaPorPlacaAlphadigiEndpoint : IEndpoint
+public class PutEntradaSaidaCameraAlphadigiLegacyEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPut("", HandleAsync)
-            .WithName("Veiculo: Efetua entrada por placa/LPR (Alphadigi)")
+            .WithName("Veiculo: Efetua entrada por placa/LPR (Alphadigi/Legado)")
             .WithSummary("Entrada por placa/LPR")
             .WithDescription("Entrada do veículo no estacionamento por placa/LPR")
             .WithOrder(4)
             .Produces<FlatResponse<VeiculoAlphadigi?>>();
-    
+
     protected static async Task<IResult> HandleAsync(
-        IVeiculoHandler handler, PutEntradaPorPlacaAlphadigiRequest request)
+        IVeiculoHandler handler, PutEntradaSaidaPorPlacaAlphadigiRequest request)
     {
-        var result = await handler.CreateAsyncAlphadigi(request);
+        var result = await handler.CreateEntradaSaidaCameraAlphadigiAsync(request);
 
         return result.IsSuccess
             ? TypedResults.Ok(result)

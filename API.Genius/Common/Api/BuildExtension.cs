@@ -59,13 +59,27 @@ namespace API.Genius.Common.Api;
             options => options.AddPolicy(
                         ApiConfiguration.CorsPolicyName,
                         policy =>
-                            policy.WithOrigins([
-                                Configuration.FrontendUrl,
-                                Configuration.BackendUrl
-                                ])
+                            policy
+                               .AllowAnyOrigin()
+                               //
+                               // OBSERVAÇÃO:
+                               // O ideal é ser restritivo nas políticas do CORS
+                               // Por enquanto libera acesso a todos os domínios
+                               // considerando que está sendo executado em rede interna
+                               //.WithOrigins([
+                               //     Configuration.FrontendUrl,
+                               //     Configuration.BackendUrl,
+                               //     ])
+                               //.AllowCredentials()
+                               //
+                               // Possível abordagem para permitir IPs de uma determinada faixa
+                               //    .SetIsOriginAllowed(origin =>
+                               //    {
+                               //        // Verifica se a origem começa com "http://10.0.0."
+                               //        return origin.StartsWith("http://10.0.0.");
+                               //    })
                                .AllowAnyMethod()
                                .AllowAnyHeader()
-                               .AllowCredentials()
                         )
                 );
     }

@@ -4,9 +4,12 @@ namespace API.Genius.Core.Responses;
 
 public class Response<TData>
 {
+    [JsonIgnore]
     private readonly int _code;
     public TData? Data { get; set; }
     public string? Message { get; set; }
+
+    public int Code => _code;
 
     [JsonConstructor]
     public Response()
