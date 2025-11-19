@@ -9,6 +9,7 @@ using API.Genius.Core.Requests.Veiculos;
 using API.Genius.Core.Responses.Veiculos;
 using API.Genius.Core.Responses.VeiculosAlphadigi;
 using API.Genius.Core.Constants;
+using API.Genius.Endpoints.Alphadigi;
 
 namespace API.Genius.Handlers;
 
@@ -62,7 +63,14 @@ public class VeiculoHandler(AppDbContext context) : IVeiculoHandler
             Placa = request.alarmInfoPlate.result.plateResult.license.Replace(" ", "") ?? string.Empty,
             IdCamera = request.alarmInfoPlate.channel,
             DataEvento = DateTime.Now,
-            ArquivoImagem = request.alarmInfoPlate.result.plateResult.imageFile ?? string.Empty
+            ArquivoImagem = request.alarmInfoPlate.result.plateResult.imageFile ?? string.Empty,
+            Status = (request.alarmInfoPlate.result.plateResult.direction == AlphadigiCamDirection.Coming?
+                    StatusEntradaSaidaPlaca.Entrada:
+                    (request.alarmInfoPlate.result.plateResult.direction == AlphadigiCamDirection.Going?
+                        StatusEntradaSaidaPlaca.Saida:
+                        StatusEntradaSaidaPlaca.NaoInformado
+                    )
+                )
         };
 
         var result = await CreateEntradaSaidaPorPlacaAsync(internalRequest);
