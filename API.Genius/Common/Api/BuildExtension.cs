@@ -1,11 +1,14 @@
 using System;
 using System.Drawing;
+using System.Runtime.InteropServices.JavaScript;
 using Microsoft.EntityFrameworkCore;
 using API.Genius.Data;
 using API.Genius.Handlers;
 using API.Genius.Core;
 using API.Genius.Core.Handlers;
 using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 
 namespace API.Genius.Common.Api;
 
@@ -18,11 +21,15 @@ namespace API.Genius.Common.Api;
         ApiConfiguration.GerenciadorPort = builder.Configuration.GetValue<int>("GerenciadorPort", 0);
         Configuration.BackendUrl = builder.Configuration.GetValue<string>("BackendUrl") ?? string.Empty;
         Configuration.FrontendUrl = builder.Configuration.GetValue<string>("FrontendUrl") ?? string.Empty;
+        Configuration.CorsAllowedOrigins = builder.Configuration.GetSection("CorsSettings:AllowedOrigins").Get<string[]>() ?? [];
+        Configuration.DefaultLogLevel = builder.Configuration.GetSection("Serilog:MinimumLevel:Default").Value ?? string.Empty;
 
-        Log.Information($"Configuration.BackendUrl: \"{Configuration.BackendUrl}\"");
-        Log.Information($"Configuration.FrontendUrl: \"{Configuration.FrontendUrl}\"");
-        Log.Information($"ApiConfiguration.GerenciadorHost: \"{ApiConfiguration.GerenciadorHost}\"");
-        Log.Information($"ApiConfiguration.GerenciadorPort: \"{ApiConfiguration.GerenciadorPort}\"");
+        Log.Information(@"Configuration.BackendUrl: ""{backendUrl}""", Configuration.BackendUrl);
+        Log.Information(@"Configuration.FrontendUrl: ""{frontendUrl}""", Configuration.FrontendUrl);
+        Log.Information(@"Configuration.CorsAllowedOrigins: ""{allowedOrigins}""", string.Join(", ", Configuration.CorsAllowedOrigins));
+        Log.Information(@"Configuration.DefaultLogLevel: ""{logLevel}""", Configuration.DefaultLogLevel);
+        Log.Information(@"ApiConfiguration.GerenciadorHost: ""{managerHost}""", ApiConfiguration.GerenciadorHost);
+        Log.Information(@"ApiConfiguration.GerenciadorPort: ""{managerPort}""", ApiConfiguration.GerenciadorPort);
     }
 
     // Adiciona serviços de documentação para a API usando o Swagger
@@ -60,7 +67,9 @@ namespace API.Genius.Common.Api;
                         ApiConfiguration.CorsPolicyName,
                         policy =>
                             policy
-                               .AllowAnyOrigin()
+                                .WithOrigins(Configuration.CorsAllowedOrigins)
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
                                //
                                // OBSERVAÇÃO:
                                // O ideal é ser restritivo nas políticas do CORS
@@ -78,8 +87,6 @@ namespace API.Genius.Common.Api;
                                //        // Verifica se a origem começa com "http://10.0.0."
                                //        return origin.StartsWith("http://10.0.0.");
                                //    })
-                               .AllowAnyMethod()
-                               .AllowAnyHeader()
                         )
                 );
     }
@@ -92,7 +99,29 @@ namespace API.Genius.Common.Api;
 
     public static void AddLogging(this WebApplicationBuilder builder)
     {
-        var logFilePath = $"logs\\{System.AppDomain.CurrentDomain.FriendlyName}.log";
+        var logFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "logs",
+            $"{AppDomain.CurrentDomain.FriendlyName}.log");
+        
+        var defaultLogLevel = builder.Configuration.GetSection("Serilog:MinimumLevel:Default").Value ?? string.Empty;
+
+        var levelSwitch = new LoggingLevelSwitch(defaultLogLevel switch
+        {
+            "Verbose" => LogEventLevel.Verbose,
+            "Debug" => LogEventLevel.Debug,
+            "Information" => LogEventLevel.Information,
+            "Warning" => LogEventLevel.Warning,
+            "Error" => LogEventLevel.Error,
+            "Fatal" => LogEventLevel.Fatal,
+            _ => LogEventLevel.Information
+        });
+
+        Directory.CreateDirectory(Path.Combine(AppContext.BaseDirectory, "logs"));
+
+        // Adicionar as linhas abaixo caso queira que o host não utilize o EventLogLogger do Windows
+        //builder.Logging.ClearProviders();
+        //builder.Logging.AddConsole();
 
         Log.Logger = new LoggerConfiguration()
             .WriteTo.File(
@@ -103,11 +132,11 @@ namespace API.Genius.Common.Api;
                 retainedFileCountLimit: 10 // mantém até 10 arquivos antigos
             )
             .WriteTo.Console(/*outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}"*/)
-            .MinimumLevel.Debug()
+            .MinimumLevel.ControlledBy(levelSwitch)
             .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
             .CreateLogger();
 
-        Log.Information($"Logger configurado com sucesso (arquivo inicial {logFilePath}).");
+        Log.Information("Logger configurado com sucesso com nível {logLevel} (arquivo inicial {logFilePath}).",defaultLogLevel,  logFilePath);
     }
 
 }

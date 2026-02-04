@@ -3,6 +3,7 @@ bin/
 obj/
 Debug/
 Release/
+Setup/
 
 # Arquivos de pacotes NuGet
 packages/
@@ -33,4 +34,7 @@ TestResults/
 *.cache
 *.VC.db
 *.VC.opendb
+
+.idea
+*.bak
 

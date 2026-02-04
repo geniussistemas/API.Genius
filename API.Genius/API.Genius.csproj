@@ -5,7 +5,28 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>6f0061df-c022-43dc-827a-f5ec29e940f0</UserSecretsId>
+    <ApplicationIcon>Setup.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Setup.ico" />
+
+    <!-- Exclui configurações de desenvolvimento do publish -->
+    <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
+
+    <!-- Exclui configurações de produçao do publish -->
+    <Content Update="appsettings.Production.json" CopyToPublishDirectory="Never" />
+
+    <!-- Copia template de configuração de Production no publish -->
+    <Content Include="appsettings.Production.json.template" CopyToPublishDirectory="PreserveNewest" />
+
+    <!-- Exclui pasta de logs do publish -->
+    <Content Remove="logs\**" />
+
+    <!-- Inclui arquivos de migration de banco de dados no publish -->
+    <None Include="migration\**" CopyToPublishDirectory="PreserveNewest" />
+
+  </ItemGroup>
 
   <ItemGroup>
 <!--    <PackageReference Include="mercadopago-sdk" Version="2.4.0" /> -->
@@ -15,6 +36,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
@@ -22,5 +45,26 @@
     <ProjectReference Include="..\API.Genius.Core\API.Genius.Core.csproj" />
     <ProjectReference Include="..\API.Genius.Lib\API.Genius.Lib.csproj" />
   </ItemGroup>
+
+  <!-- ******************************************** -->
+  <!--
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="..\packages\Serilog.4.3.1-dev-02373\build\Serilog.targets" Condition="Exists('..\packages\Serilog.4.3.1-dev-02373\build\Serilog.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este projeto faz referência a pacotes do NuGet que não estão presentes neste computador. Use a Restauração de Pacotes do NuGet para baixá-los.  Para obter mais informações, consulte http://go.microsoft.com/fwlink/?LinkID=322105. O arquivo ausente é {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Serilog.4.3.1-dev-02373\build\Serilog.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Serilog.4.3.1-dev-02373\build\Serilog.targets'))" />
+  </Target>
+  -->
+  <!-- Copia o template de config na pasta de build para que seja utilizado em novas instalações -->
+  <!-- Target que roda após a compilação -->
+  <Target Name="AfterBuildConfigTemplate" AfterTargets="Build">
+    <Copy SourceFiles="appsettings.Production.json.template" DestinationFiles="$(OutputPath)appsettings.Production.json.template" />
+    <!-- <Copy SourceFiles="$(OutputPath)appsettings.Production.json.template" DestinationFiles="$(OutputPath)appsettings.Production.json.template" /> -->
+    <!-- Executa script externo para substituir valores sensíveis no arquivo template -->
+    <!-- <Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)ReplaceSensitive.ps1&quot; &quot;$(OutputPath)appsettings.Production.json.template&quot;" /> -->
+  </Target>
+  <!-- ***************************************************************************************** -->
 
 </Project>
